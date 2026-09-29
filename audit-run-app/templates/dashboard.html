@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Audit history — Audit Console{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Audit history</h1>
+  <a href="{{ url_for('new_audit') }}" class="btn btn-primary">New audit</a>
+</div>
+
+{% if runs %}
+<table class="log-table">
+  <thead>
+    <tr>
+      <th>Status</th>
+      <th>Host</th>
+      <th>Benchmark</th>
+      <th>Results</th>
+      <th>Started</th>
+      <th>By</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for run in runs %}
+    <tr>
+      <td>
+        {% if run.status == 'success' %}
+          <span class="tag tag-pass">[ PASS ]</span>
+        {% elif run.status == 'failed' %}
+          <span class="tag tag-fail">[ FAIL ]</span>
+        {% else %}
+          <span class="tag tag-running">[ RUNNING <span class="cursor">_</span> ]</span>
+        {% endif %}
+      </td>
+      <td class="mono">{{ run.host }}:{{ run.port }}</td>
+      <td class="mono">{{ run.benchmark }}</td>
+      <td class="mono muted">
+        {% if run.status == 'success' %}{{ run.result_count }}
+        {% elif run.status == 'failed' %}<span class="faint">—</span>
+        {% else %}<span class="faint">…</span>{% endif %}
+      </td>
+      <td class="mono muted">{{ run.started_at.strftime('%Y-%m-%d %H:%M') }} UTC</td>
+      <td class="muted">{{ run.started_by }}</td>
+      <td class="row-actions">
+        <a href="{{ url_for('view_audit', run_id=run.id) }}">view</a>
+        <form method="POST" action="{{ url_for('delete_audit', run_id=run.id) }}"
+              onsubmit="return confirm('Delete audit #{{ run.id }}? This cannot be undone.');">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="link-btn link-danger">delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<div class="empty-state">
+  <p>No audits have been run yet.</p>
+  <a href="{{ url_for('new_audit') }}" class="btn btn-primary">Run your first audit</a>
+</div>
+{% endif %}
+{% endblock %}

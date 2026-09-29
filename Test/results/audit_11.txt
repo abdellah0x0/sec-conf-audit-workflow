@@ -1,0 +1,217 @@
+======================================================================
+Audit #11 - anssi-bp-028
+======================================================================
+Host       : IZYAL7yBIVz9OLKo1uVzhg38TLOYYDrjur2kbkiv5QM=:22
+SSH user   : UVtNVV2UnNLGahxFqQ3zKNRvcE8-NkgVc0GtOndteUg=
+Status     : success
+Started    : 2026-09-26 15:18:53 UTC
+Finished   : 2026-09-26 15:20:32 UTC
+Duration   : 98s
+Started by : admin
+
+Results (68):
+----------------------------------------------------------------------
+[R7] grep iommu=force /proc/cmdline
+    -> 
+
+[R8] sysctl kernel.panic_on_oops
+    -> o-qtyxgHpUMc2ouAO4Mtp1A_PfZdN8TihUf5zs9_RZA=nic_on_oops = 0
+
+[R9] sysctl kernel.dmesg_restrict
+    -> NhDNrKNo0kgie_TUMHF-ZUPHJhFPFsrfiKnJudXSMwQ=esg_restrict = 1
+
+[R10] sysctl kernel.modules_disabled
+    -> fTkCw2AXounob4BIZ3bAG-Q2R5IUS4y5zNZ5pnNlmvY=dules_disabled = 0
+
+[R11] sysctl kernel.yama.ptrace_scope
+    -> aZPk6D4psF4XGd6hRXtjks2gq_PdC303sxbIHjEctJc=race_scope = 1
+
+[R12] sysctl net.ipv4.ip_forward
+    -> net.ipv4.ip_forward = 1
+
+[R13] grep ipv6.disable /proc/cmdline
+    -> 
+
+[R14] sysctl fs.suid_dumpable
+    -> jav2B6iwyd5rKkNHZjHdNOweEpdwCX0u49Sxg57550U=id_dumpable = 2
+
+[R15] grep CONFIG_STRICT_KERNEL_RWX /boot/config-$(uname -r)
+    -> CONFIG_STRICT_KERNEL_RWX=y
+
+[R16] grep CONFIG_DEBUG_CREDENTIALS /boot/config-$(uname -r)
+    -> 
+
+[R17] grep CONFIG_SLAB_FREELIST_RANDOM /boot/config-$(uname -r)
+    -> CONFIG_SLAB_FREELIST_RANDOM=y
+
+[R18] grep CONFIG_MODULE_SIG_FORCE /boot/config-$(uname -r)
+    -> # CONFIG_MODULE_SIG_FORCE is not set
+
+[R19] grep CONFIG_PANIC_ON_OOPS /boot/config-$(uname -r)
+    -> # CONFIG_PANIC_ON_OOPS is not set
+
+[R20] grep CONFIG_SECCOMP /boot/config-$(uname -r)
+    -> CONFIG_SECCOMP=y CONFIG_SECCOMP_FILTER=y # CONFIG_SECCOMP_CACHE_DEBUG is not set
+
+[R21] grep CONFIG_GCC_PLUGINS /boot/config-$(uname -r)
+    -> 
+
+[R22] grep CONFIG_SYN_COOKIES /boot/config-$(uname -r)
+    -> CONFIG_SYN_COOKIES=y
+
+[R23] grep -v CONFIG_KEXEC /boot/config-$(uname -r)
+    -> # # Automatically generated file; DO NOT EDIT. # Linux/x86 7.0.14 Kernel Configuration # CONFIG_CC_VERSION_TEXT="x86_64-linux-gnu-gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0" CONFIG_CC_IS_GCC=y CONFIG_GCC_VERSION=WQ_uPuEmiO4uoUO-WzfW8L4PTGEscR_6v8win-UCcmU= CONFIG_CLANG_VERSION=0 CONFIG_AS_IS_GNU=y CONFIG_AS_VERSION=24600 CONFIG_LD_IS_BFD=y CONFIG_LD_VERSION=24600 CONFIG_LLD_VERSION=0 CONFIG_RUSTC_VERSION=109301 CONFIG_RUST_IS_AVAILABLE=y CONFIG_RUSTC_LLVM_VERSION=210108 CONFIG_CC_CAN_LINK=y CONFIG_CC_HAS_ASM_GOTO_OUTPUT=y CONFIG_CC_HAS_ASM_GOTO_TIED_OUTPUT=y CONFIG_TOOLS_SUPPORT_RELR=y CONFIG_CC_HAS_ASM_INLINE=y CONFIG_CC_HAS_ASSUME=y CONFIG_CC_HAS_NO_PROFILE_FN_ATTR=y CONFIG_CC_HAS_COUNTED_BY=y CONFIG_CC_HAS_MULTIDIMENSIONAL_NONSTRING=y CONFIG_LD_CAN_USE_KEEP_IN_OVERLAY=y CONFIG_RUSTC_HAS_SLICE_AS_FLATTENED=y CONFIG_RUSTC_HAS_COERCE_POINTEE=y CONFIG_RUSTC_HAS_SPAN_FILE=y CONFIG_RUSTC_HAS_UNNECESSARY_TRANSMUTES=y CONFIG_RUSTC_HAS_FILE_WITH_NUL=y CONFIG_RUSTC_HAS_FILE_AS_C_STR=y CONFIG_PAHOLE_VERSION=131 CONFIG_IRQ_WORK=y CONFIG_
+
+[R24] grep CONFIG_X86_PAE /boot/config-$(uname -r)
+    -> 
+
+[R25] grep CONFIG_X86_64 /boot/config-$(uname -r)
+    -> CONFIG_X86_64=y CONFIG_X86_64_ACPI_NUMA=y
+
+[R26] grep CONFIG_DEFAULT_MMAP_MIN_ADDR /boot/config-$(uname -r)
+    -> CONFIG_DEFAULT_MMAP_MIN_ADDR=65536
+
+[R27] grep CONFIG_ARM64_SW_TTBR0_PAN /boot/config-$(uname -r)
+    -> 
+
+[R28] mount 
+    ->  grep /boot|/dev/sda2 on /boot type ext4 (rw,relatime)
+
+[R29] stat /boot
+    ->  File: /boot size: 4096 Blocks: 8 IO Block: 4096 directory Device: 8,2 Inode: 2 Links: 4 Access: (0755/drwxr-xr-x) Uid: ( 0/ root) Gid: ( 0/ root) Access: ckBEeMI_wUazSDT7PUyIpD7W1yv_2eM5HCRbAaIYhEtRRi2utupKdepVhK0Ky2aLcF6Ez-4abIw2bEL4GlkweA== Modify: BUqz-42GHtoaUzY4dovV34GWSvii7i602UPtLfR2-By2V43wx1ig1VB-nVJeoovLuZYWV3MSQMzcjuXnXYDZPw== Change: q0eu770gjQ7mSy2JzOYPNEI2tk4e2qcOLuMa2BYV6OB29qf2ak4e4X4cM8rPxQ_J7lowHF_vEccsWcYlVYSsRg== Birth: x74POmQjHY0x0nMUCM1HseLJL67wrYaHsW-hAE3Q0tQDsFImpOE0DLEHRBRILuTCUEw1r0681Ggo_lZ2upPxRA==
+
+[R30] getent passwd
+    -> root:x:0:0:root:/root:/bin/bash daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin bin:x:2:2:bin:/bin:/usr/sbin/nologin sys:x:3:3:sys:/dev:/usr/sbin/nologin sync:x:4:65534:sync:/bin:/bin/sync games:x:5:60:games:/usr/games:/usr/sbin/nologin man:x:6:12:man:/var/cache/man:/usr/sbin/nologin lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin mail:x:8:8:mail:/var/mail:/usr/sbin/nologin news:x:9:9:news:/var/spool/news:/usr/sbin/nologin uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin proxy:KSksqe9SAdCdHVSWjq0nsF6VdqGayN-pizEQ84X7oPE=:proxy:/bin:/usr/sbin/nologin www-data:CEl6dBSi8N1r9zHwRTTOpiDP9EiEmSahsoLA5A4b8fM=:www-data:/var/www:/usr/sbin/nologin backup:qG-zPYy2DGfDJHD1-Qa2CF3MBiyNWqTwdR10D6D3QPI=:backup:/var/backups:/usr/sbin/nologin list:x:38:38:ylVp2Sy5leqI-zLI0U6HOWEIQD-gY0fRR1opNr2_8cB2S1U_HIZauU20qs634BPf:/var/list:/usr/sbin/nologin irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin _apt:x:42:65534::/nonexistent:/usr/sbin/nologin nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin systemd-network:y94JQm5lRXV6B-nJG57JPhWpBJjGjvtND77auy5tWF0=:systemd Network Management:/:/usr/sbin/nologin dhcpcd:x:997:997:DHCP Client Daemon:/usr/lib/dhcpcd:/bin/false messagebus:x:996:996:Syst
+
+[R31] grep PASS_MIN_LEN /etc/login.defs
+    -> 
+
+[R32] grep TMOUT /etc/profile
+    -> 
+
+[R33] grep execve /etc/audit/audit.rules
+    -> 
+
+[R34] getent passwd
+    -> root:x:0:0:root:/root:/bin/bash daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin bin:x:2:2:bin:/bin:/usr/sbin/nologin sys:x:3:3:sys:/dev:/usr/sbin/nologin sync:x:4:65534:sync:/bin:/bin/sync games:x:5:60:games:/usr/games:/usr/sbin/nologin man:x:6:12:man:/var/cache/man:/usr/sbin/nologin lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin mail:x:8:8:mail:/var/mail:/usr/sbin/nologin news:x:9:9:news:/var/spool/news:/usr/sbin/nologin uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin proxy:_0ioCr-pSy3QNUV3YUxk3bOxvWABVMijCd9TH9KWicM=:proxy:/bin:/usr/sbin/nologin www-data:oA_NGZBmfjwSFvYp_8kXLTjvb7U4Yv-TFVqMbZSMV5c=:www-data:/var/www:/usr/sbin/nologin backup:KCeoskHLNj0REnPpZWqm9vwfOSQ54ue6pUTPxtGl7JY=:backup:/var/backups:/usr/sbin/nologin list:x:38:38:0QfnZJZwTuF47rNlvhE2TtaprKwfxwtAOVjV4GW6NqyIdZ4enmhaC6opU7cXPbBk:/var/list:/usr/sbin/nologin irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin _apt:x:42:65534::/nonexistent:/usr/sbin/nologin nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin systemd-network:9KNBd_tA7o5t35ZPJBoz-LxK7NgewtCw3ue1RlKeMpk=:systemd Network Management:/:/usr/sbin/nologin dhcpcd:x:997:997:DHCP Client Daemon:/usr/lib/dhcpcd:/bin/false messagebus:x:996:996:Syst
+
+[R35] getent passwd
+    -> root:x:0:0:root:/root:/bin/bash daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin bin:x:2:2:bin:/bin:/usr/sbin/nologin sys:x:3:3:sys:/dev:/usr/sbin/nologin sync:x:4:65534:sync:/bin:/bin/sync games:x:5:60:games:/usr/games:/usr/sbin/nologin man:x:6:12:man:/var/cache/man:/usr/sbin/nologin lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin mail:x:8:8:mail:/var/mail:/usr/sbin/nologin news:x:9:9:news:/var/spool/news:/usr/sbin/nologin uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin proxy:xOAiXoEufGzNzIfw4zw2vGjrFoa-USqkfeF2LzsFmhw=:proxy:/bin:/usr/sbin/nologin www-data:D9Jg-AxM-Dni4d4jw2hhJOoMJ724bMbL4dVM3ddB_nk=:www-data:/var/www:/usr/sbin/nologin backup:09shfq_q9Tpp82A0qpV4xUBNOhwsWgiTaZjfe8tIxsE=:backup:/var/backups:/usr/sbin/nologin list:x:38:38:_mxrHRHOjC0xTAeTY2gqR-T4O0KnuHmYipTw2JPfzZEwtp5Zj8TVg9wxC83_zSMD:/var/list:/usr/sbin/nologin irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin _apt:x:42:65534::/nonexistent:/usr/sbin/nologin nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin systemd-network:dFwhFAafoG0JeWRsnxCN2tKjMLHXUu2Yn6vF9bvsndc=:systemd Network Management:/:/usr/sbin/nologin dhcpcd:x:997:997:DHCP Client Daemon:/usr/lib/dhcpcd:/bin/false messagebus:x:996:996:Syst
+
+[R36] grep umask /etc/profile
+    -> 
+
+[R37] grep -E 'apparmor
+    -> selinux' /proc/cmdline|
+
+[R38] ls -l /usr/bin/sudo
+    -> lrwxrwxrwx 1 dwtBir5dslLqq0BUUkfdMkPmntsjkRNb2qi8Hj9EsQE= U4pKW7zls1d_YPgoLnXKmKGue-brwKToiGMfVRAi4GU= /usr/bin/sudo -> /etc/alternatives/sudo
+
+[R39] grep '^Defaults' /etc/sudoers
+    -> grep: /etc/sudoers: Permission denied
+
+[R40] grep -v 'root' /etc/sudoers
+    -> grep: /etc/sudoers: Permission denied
+
+[R41] grep EXEC /etc/sudoers
+    -> grep: /etc/sudoers: Permission denied
+
+[R42] grep '!' /etc/sudoers
+    -> grep: /etc/sudoers: Permission denied
+
+[R43] grep -E '\*
+    -> ""' /etc/sudoers|grep: /etc/sudoers: Permission denied
+
+[R44] grep sudoedit /etc/sudoers
+    -> grep: /etc/sudoers: Permission denied
+
+[R45] aa-status
+    -> You do not have enough privilege to read the profile set. apparmor module is loaded.
+
+[R46] grep '^SELINUX=enforcing' /etc/selinux/config
+    -> grep: /etc/selinux/config: No such file or directory
+
+[R47] semanage user -l
+    -> /tmp/audit_anssi-bp-028_lBWOUCW_vMjzvvAK1ft6_srIcuRx1ZpxsCtVBYRRWaI=: line 165: semanage: command not found
+
+[R48] getsebool allow_execheap
+    -> /tmp/audit_anssi-bp-028_gta5LB65u2AqCbzKcCB4SEpeRH_GfIhI2-HwlMq_V3M=: line 169: getsebool: command not found
+
+[R49] rpm -q setroubleshoot
+    -> package setroubleshoot is not installed
+
+[R50] stat /etc/shadow
+    ->  File: /etc/shadow size: 1191 Blocks: 8 IO Block: 4096 regular file Device: 252,0 Inode: 526121 Links: 1 Access: (0640/-rw-r-----) Uid: ( 0/ root) Gid: ( 42/ shadow) Access: pvMLBi30X_JxoR7gyLwXfV5RxSxaMhCOUGdsCgfnf9hiyGbVmunIfSsxO2GrymnxjefLzK79yBLtvfCFkqfEFA== Modify: TtO62TjFUC869GK_asqCYgvkJXNDIgubI1ZfUeFYENUPEiIpYkXNFAW20G9ltAarEJCMqsE3UdGnHx33iBk6IA== Change: Oi--Q8_2LigJ1BVeEFy3BLq00Ns4f8pJCW3NlNhTWYKUfnFL19aq1zyqzKZSjWDim-Pc_SDDxCsaNNLgiYFmUA== Birth: UKtDYVlbuvz6dIz4dIt56E-N0hZMwjPAz1HEew2J8IfHnisFtlnUavDBeB-s7swdVJzIHJ909tYEDx0GCUl1Mg==
+
+[R51] find /etc -name '*.key' -o -name '*.pem'
+    -> find: ‘/etc/multipath’: Permission denied find: ‘/etc/polkit-1/rules.d’: Permission denied find: ‘/etc/credstore.encrypted’: Permission denied find: ‘/etc/credstore’: Permission denied find: ‘/etc/lvm/backup’: Permission denied find: ‘/etc/lvm/archive’: Permission denied find: ‘/etc/ssl/private’: Permission denied /etc/ssl/certs/Certum_Trusted_Root_lt-Nyyq8u4-XIo4-OhQpQuBTeNrLrubCgxSu7YrzC3I=m /etc/ssl/certs/KuHv9lZ2vpgl47KG-2eZDstUoiGkRcOY9W83WS5tLVA=_TLS_RSA_Root_CA_pZsWaaz9pognmRAXCxC9utwxXZ-CnlVILScRBOByxmw=m /etc/ssl/certs/Telekom_Security_TLS_RSA_Root_1PbEhsN8ud77SeIFMmym_4w0b0-wA0oTbder4TiwSDY=m /etc/ssl/certs/vTrus_Root_n7FMTRORnTdRmEyH0fhwFtsPYdasgOFmjiZ_Wi5cbFs=m /etc/ssl/certs/DigiCert_Trusted_Root_LNaUNMQ_p4PwkRLJjc-AfhEVCv46Zyg6yLC3TakUqf0=m /etc/ssl/certs/ISRG_Root_1WbafSaUGaDNr4n-_R_-Rp8odxYnbw7mYHxdZIaseNk=m /etc/ssl/certs/Certainly_Root_5o-G5_3h7dnYlgoplPa2jPQ5ZWmsXlgbuqviLMTpOs4=m /etc/ssl/certs/DigiCert_Global_Root_KnhpGm9kvWLoTK8H_BJVpyXiC5jcuORCHAn31-wNTaw=m /etc/ssl/certs/GTS_Root_7I3ne45QLmigAzxnDVTRxF8kAzV-14te_T_07LBSeeA=m /etc/ssl/certs/D-TRUST_BR_Root_CA_2_HrzcGK4UevSjripATApDQdajnRNaqAw-pd9loTCtTqk=m /etc/ssl/certs/Buypass_Class_3_Root_whauZzs05MoJ0pLUiO-107Wkt5UqKXpjX8C2-vmf-LA=m /etc/ssl/certs/HiPKI_Root_CA_-_xrDBUciKJor2AvnGvzj6J6F1jhGwE3XqUnJEJ6e6OwI=m /etc/ssl/certs/COMODO_RSA_Certification_lf4V1I1MkVmFS5m7_1cRWkO61aKLzYC6sRFaa-HG7a0=m /etc/ssl/certs/D-TRUST_Root_Class_3_CA_2_EV_ib1Nc-xucbz7RFCvpYOPqVgqOkuhzrDy5xCdNcuoph8=m /etc/ssl/certs/AC_RAIZ_phR_K_FOpGL2_YU5pKzL5eVBpwIpBwUlDWSXHDcjUI4=m /etc/ssl/certs/uAZE0RWNlGfzW2jxD2nDTA4-OXdwZmVuNZ2aSygPAEM=
+
+[R52] find /var/run -type s
+    -> 
+
+[R53] find / -type f -nouser
+    -> find: ‘/boot/lost+found’: Permission denied find: ‘/sys/kernel/tracing’: Permission denied find: ‘/sys/kernel/debug’: Permission denied find: ‘/sys/fs/pstore’: Permission denied find: ‘/sys/fs/bpf’: Permission denied find: ‘/proc/tty/driver’: Permission denied find: ‘/proc/1/task/1/fd’: Permission denied find: ‘/proc/1/task/1/fdinfo’: Permission denied find: ‘/proc/1/task/1/ns’: Permission denied find: ‘/proc/1/fd’: Permission denied find: ‘/proc/1/map_files’: Permission denied find: ‘/proc/1/fdinfo’: Permission denied find: ‘/proc/1/ns’: Permission denied find: ‘/proc/2/task/2/fd’: Permission denied find: ‘/proc/2/task/2/fdinfo’: Permission denied find: ‘/proc/2/task/2/ns’: Permission denied find: ‘/proc/2/fd’: Permission denied find: ‘/proc/2/map_files’: Permission denied find: ‘/proc/2/fdinfo’: Permission denied find: ‘/proc/2/ns’: Permission denied find: ‘/proc/3/task/3/fd’: Permission denied find:
+
+[R54] find / -type d -perm -0002 -a -not -perm -1000
+    -> find: ‘/boot/lost+found’: Permission denied find: ‘/sys/kernel/tracing’: Permission denied find: ‘/sys/kernel/debug’: Permission denied find: ‘/sys/fs/pstore’: Permission denied find: ‘/sys/fs/bpf’: Permission denied find: ‘/proc/tty/driver’: Permission denied find: ‘/proc/1/task/1/fd’: Permission denied find: ‘/proc/1/task/1/fdinfo’: Permission denied find: ‘/proc/1/task/1/ns’: Permission denied find: ‘/proc/1/fd’: Permission denied find: ‘/proc/1/map_files’: Permission denied find: ‘/proc/1/fdinfo’: Permission denied find: ‘/proc/1/ns’: Permission denied find: ‘/proc/2/task/2/fd’: Permission denied find: ‘/proc/2/task/2/fdinfo’: Permission denied find: ‘/proc/2/task/2/ns’: Permission denied find: ‘/proc/2/fd’: Permission denied find: ‘/proc/2/map_files’: Permission denied find: ‘/proc/2/fdinfo’: Permission denied find: ‘/proc/2/ns’: Permission denied find: ‘/proc/3/task/3/fd’: Permission denied find:
+
+[R55] mount 
+    ->  grep /tmp|tmpfs on /tmp type tmpfs (rw,nosuid,nodev,size=980168k,nr_inodes=1048576,inode64,7h6aB-N-Lo_ArIR1Ryqaqs81EgsRyNPFQlSffN2ORkE=)
+
+[R56] find / -type f -perm /6000
+    -> find: ‘/boot/lost+found’: Permission denied find: ‘/sys/kernel/tracing’: Permission denied find: ‘/sys/kernel/debug’: Permission denied find: ‘/sys/fs/pstore’: Permission denied find: ‘/sys/fs/bpf’: Permission denied find: ‘/proc/tty/driver’: Permission denied find: ‘/proc/1/task/1/fd’: Permission denied find: ‘/proc/1/task/1/fdinfo’: Permission denied find: ‘/proc/1/task/1/ns’: Permission denied find: ‘/proc/1/fd’: Permission denied find: ‘/proc/1/map_files’: Permission denied find: ‘/proc/1/fdinfo’: Permission denied find: ‘/proc/1/ns’: Permission denied find: ‘/proc/2/task/2/fd’: Permission denied find: ‘/proc/2/task/2/fdinfo’: Permission denied find: ‘/proc/2/task/2/ns’: Permission denied find: ‘/proc/2/fd’: Permission denied find: ‘/proc/2/map_files’: Permission denied find: ‘/proc/2/fdinfo’: Permission denied find: ‘/proc/2/ns’: Permission denied find: ‘/proc/3/task/3/fd’: Permission denied find:
+
+[R57] find / -type f -perm /6000 -user root
+    -> find: ‘/boot/lost+found’: Permission denied find: ‘/sys/kernel/tracing’: Permission denied find: ‘/sys/kernel/debug’: Permission denied find: ‘/sys/fs/pstore’: Permission denied find: ‘/sys/fs/bpf’: Permission denied find: ‘/proc/tty/driver’: Permission denied find: ‘/proc/1/task/1/fd’: Permission denied find: ‘/proc/1/task/1/fdinfo’: Permission denied find: ‘/proc/1/task/1/ns’: Permission denied find: ‘/proc/1/fd’: Permission denied find: ‘/proc/1/map_files’: Permission denied find: ‘/proc/1/fdinfo’: Permission denied find: ‘/proc/1/ns’: Permission denied find: ‘/proc/2/task/2/fd’: Permission denied find: ‘/proc/2/task/2/fdinfo’: Permission denied find: ‘/proc/2/task/2/ns’: Permission denied find: ‘/proc/2/fd’: Permission denied find: ‘/proc/2/map_files’: Permission denied find: ‘/proc/2/fdinfo’: Permission denied find: ‘/proc/2/ns’: Permission denied find: ‘/proc/3/task/3/fd’: Permission denied find:
+
+[R58] rpm -qa
+    -> 
+
+[R59] cat /etc/apt/sources.list
+    -> # Ubuntu sources have moved to /etc/apt/h3PdEJkant9Ax3b4waPouS1BnBQ3vBzufJ0CfW63YTc=st.d/tJqQocNM2maw-gIUdiMzfjI30ZxsdUmsSIDf6PGocUc=urces
+
+[R60] cat /etc/apt/sources.list
+    -> # Ubuntu sources have moved to /etc/apt/oLtHQ3KwttUcI9miCc8sP3fzHm24swYJHQVLcVpCcDU=st.d/DyMkVJJeSrJAWUfolz8Fxi2AHltTGzWi6vtBZbiW5fQ=urces
+
+[R61] cat /etc/apt/apt.conf.d/50unattended-upgrades
+    -> // Automatically upgrade packages from these (origin:archive) pairs // // Note that in Ubuntu security updates may pull in new dependencies // from non-security sources (e.g. chromium). By allowing the release // pocket these get automatically pulled in. Unattended-Upgrade::Allowed-Origins { "${distro_id}:${distro_codename}"; "${distro_id}:${distro_codename}-security"; // Extended Security Maintenance; doesn't necessarily exist for // every release and this system may not have it installed, but if // available, the policy for updates is such that unattended-upgrades // should also install from here by default. "${distro_id}ESMApps:${distro_codename}-apps-security"; "${distro_id}ESM:${distro_codename}-infra-security"; // "${distro_id}:${distro_codename}-updates"; // "${distro_id}:${distro_codename}-proposed"; // "${distro_id}:${distro_codename}-backports"; }; // Python regular expressions, matching packages to exclude from upgrading Unattended-Upgrade::Package-Blacklist { // The followi
+
+[R62] systemctl list-units --type service
+    ->  UNIT LOAD ACTIVE SUB DESCRIPTION 9aMlVT7qX9fkl6k1A9dYjN9CawF6hv9x2NHso3rSYwg=rvice loaded active exited Load AppArmor profiles LjZfWcHET2Hejq_XqVxLajEfE2RmRh3hCyMI2tkSqPo=rvice loaded active exited automatic crash report generation vSNdxu8ptiIC912j15yMgwAHbzgQcQ977si7i1jVEa8=rvice loaded active running Security Audit Logging Service Rz42ihKgN3O-UErcTFGL9k4sGElVJIN9BumvEMos7BBO2xj_zJtsXik9Acsvzgdorvice loaded active exited Availability of block devices IOFqVP_xebcp0pVBfEdiXlTdMV8eka6G0S48rc0SD82bgyGeiPJjurHeQD0btqNarvice loaded active exited Set console font and keymap Ood0jyuqTyXyw_iyluClv_KiIn4d_PrMRXM8nNiqDOk=rvice loaded active running containerd container runtime IGZJRDcP4cLXxnTUJwDestiJ5iUP9tvoonhLLstuiV0=rvice loaded active running Regular background program processing daemon ClxZ4Y84Jb9aHbGhRf6qD1AzTrh0zI_mgg-d-XnA_W8=rvice loaded active running D-Bus System Message Bus up0zbY1eBHT54C3ckxs3F2KnFfsb3McxrULRFJ7H448=rvice loaded active running Docker Application Container Engine YvBe8HdWouBYZ03-EFpGBhWzs4wNCsRxdNdTdNJslXdvGT7zt127Lh-qGZQ1OtjFrvice loaded active exited Restore /run/initramfs on shutdown j0RpzweONuL-C0aR9-0uTiN9QoXDUCTRbc589unEZyE=rvice loaded active exited Create final runtime dir for shutdown pivot root JLnHkG4AHyxj0rLuJBQ7Im0k3UP8rI6WdA9LBaSOWQ0=rvice loaded active running Firmware update daemon getty@O3txp2JRDpcoQqAUPLN1rZbX_I28FYzNEKTb88ctS9Y=rvice loaded active running Getty on tty1 za06uehoaB6sG9R02d0xP2EHWHSOG778TFiS7m6ikWghjxoyczie19r5K2GEjCPLrvice loaded active exited Set the conso
+
+[R63] systemctl status
+    -> ● auditor State: running Units: 492 loaded (incl. loaded aliases) Jobs: 0 queued Failed: 0 units Since: T2le77UoZJqBTOjLVu5MQRd7DJeLnYQ5Gu9mucfQlin_EdddwiONfZwDcwtRfGlj; 1h 6min ago systemd: 259.5-0ubuntu3.4 Tainted: unmerged-bin CGroup: / ├─GF56i6_fSpVvASFvHcGjRZhqNvpX9-3ZMJ88bCuqmgM=47gwT8XPJEjHc9bgvoL923wGgUUzZy4MVcoPqh7ArFE= │ └─1 /usr/lib/systemd/systemd --switched-root --system --deserialize=51 ├─Z1xhjC7nh7WJxEoAwuync9SKESm96sYXwweiKXPfQvQ=ice │ ├─aHNQPp0ITVMmhyS765HEWfA9poejmMraFsw0dDE_cXA=rvice │ │ └─1408 /usr/sbin/ModemManager │ ├─vNVIKRnbTdD63Yi30vjgbN5r_GZyTycJoAljW8zJr3w=rvice │ │ └─867 /usr/sbin/auditd │ ├─-Ci7uV44kAdrQvPyZ0od3fCL5Q7wzpBk67_4UHf4nzQ=rvice │ │ ├─ MR-wBiLl-lEWW327j8DDdO-kkdKq403ZCDAkGfgwODc= /usr/bin/containerd │ │ ├─ 2029 /usr/bin/containerd-shim-runc-v2 -namespace moby -id baebeffa9923882c88c7cceab7bc3af5810582ea100bef4376eef1d6c6399849 -address /run/containerd/I8dVDI0cgyu_ua6t--n7bLE7TDyQl3nqe2Ky1kcABEM=ck │ │ └─QZKLf56Iq5X_VZHO_WHgdfUATaeWTVgjmFbKBvpEeOo= /usr/bin/containerd-shim-runc-v2 -namespace moby -id dfa23bc22363cbeb9dde0d63d3c21698a7c27424bcec34813bedd49f230c13f4 -address /run/containerd/5LtYjic6IrYaJOA4Jnt3rfT4p-OOe-ZK0xAanlqOqNM=ck │ ├─yn1mEFuWVqtihZ7pK1yXh5UkseQhA9MW8N6KLmdPFik=rvice │ │ └─1231 /usr/sbin/cron -f -P │ ├─UAIkJDXUXlmwpujbIN5L94TJbwvolkLbib2MMAmt5ZQ=rvice │ │ └─Zsm1fox6xa-slQ1u9Bu-nQZ_LWjC-SPi_GEEhOHYJOZaHYZasb1eirYKkWrIDcLn --
+
+[R64] getcap -r /
+    -> /snap/snapd/27738/usr/lib/snapd/snap-confine cap_chown,cap_dac_override,cap_dac_read_search,cap_fowner,cap_setgid,cap_setuid,cap_sys_chroot,cap_sys_ptrace,cap_sys_admin,cap_sys_resource=p /snap/core24/2124/usr/bin/ping cap_net_raw=ep /snap/core24/1643/usr/bin/ping cap_net_raw=ep /usr/bin/ping cap_net_raw=ep /usr/bin/mtr-packet cap_net_raw=ep /usr/lib/snapd/snap-confine cap_chown,cap_dac_override,cap_dac_read_search,cap_fowner,cap_setgid,cap_setuid,cap_sys_chroM7hjWell2Acpyja1XB9UdWJwnxB1-SsV5IVG1JpyfLg=,cap_sys_ptrace,cap_sys_admin,cap_sys_resource=p /usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-ptp-helper cap_net_bind_service,cap_net_admin,cap_sys_nice=ep
+
+[R67] grep -r ldap /etc/pam.d/
+    -> 
+
+[R68] grep pam_unix /etc/pam.d/common-password
+    -> # used to change user passwords. The default is pam_unix. # Explanation of pam_unix options: #`OBSCURE_CHECKS_ENAB' option in erXUxs7ucC3L9lw6byxVe7mZ5NwX-Y0-qBjb1LK9MO0=fs. See the pam_unix manpage password [success=1 default=ignore] pam_q3fZyyvgP1_urV8nqrJZTsSVegcw3_cIXpc0Z4TRlaA= obscure yescrypt
+
+[R69] grep -r ldap /etc/nss/
+    -> grep: /etc/nss/: No such file or directory
+
+[R70] getent passwd
+    -> root:x:0:0:root:/root:/bin/bash daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin bin:x:2:2:bin:/bin:/usr/sbin/nologin sys:x:3:3:sys:/dev:/usr/sbin/nologin sync:x:4:65534:sync:/bin:/bin/sync games:x:5:60:games:/usr/games:/usr/sbin/nologin man:x:6:12:man:/var/cache/man:/usr/sbin/nologin lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin mail:x:8:8:mail:/var/mail:/usr/sbin/nologin news:x:9:9:news:/var/spool/news:/usr/sbin/nologin uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin proxy:YA7QTLnFIo2i-4P8CfjfZN9C7KnUhdHsSkGaRl8QVAY=:proxy:/bin:/usr/sbin/nologin www-data:sjGMdkOCyi81HkwgqSQ588lo4VXOdDWMioG_PMmgsug=:www-data:/var/www:/usr/sbin/nologin backup:4KhGIfqr4LCdSbtxh3xy9ibcWkAHejsTn3b_Pe323wc=:backup:/var/backups:/usr/sbin/nologin list:x:38:38:te94Pyc8g3Dbk6qke_noQjTruJaKtG2pu-yfAqXvujPQUUqyuljVumtOnO8JWA49:/var/list:/usr/sbin/nologin irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin _apt:x:42:65534::/nonexistent:/usr/sbin/nologin nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin systemd-network:V8dZVvRYbkGogqsSH-_tEWPRIWz2ZD8XWZxrr1oT2Hk=:systemd Network Management:/:/usr/sbin/nologin dhcpcd:x:997:997:DHCP Client Daemon:/usr/lib/dhcpcd:/bin/false messagebus:x:996:996:Syst
+
+[R71] systemctl status rsyslog
+    -> ● cllGEyo5qPiWePrMSOQEbF0z_st1zqIWjqcgjV1pDW4=rvice - System Logging Service Loaded: loaded (/usr/lib/systemd/system/Tetd4zd6n17MGDTvR3k1eEYJjTEmb6KyvcPsDazMERQ=rvice; enabled; preset: enabled) Active: active (running) since M8HQ5s4GXShfMOkAlE0UaTGp4AT-2qmkQ9YPiDO2a-vQmRbotGkNa_vVYWDPVn5v; 1h 6min ago Invocation: 5_OjiG-TC6Y8o--QqNXKseXyfrEBqa9UFCUa7PFTDock1TGuSmr1AiVqDU1vZ0CYjCaxarGfszxxuJnjUZ7pLg== TriggeredBy: ● qzlJwFQzuIBbB76SG7wOzuYC9lr5Y-Xn2Ussn2n28lc=cket Docs: man:rsyslogd(8) man:dvMGOi1LZgn31RKkhmG0l5vn5meaoAq3DUqH93aGzEo=nf(5) 5pJJ0QivDtiz_Wfcz-X0MhJBnLtyoJwkRusGX-12UinUX9E2yb7H0tKNg0mspGIU Process: 1245 ExecStartPre=/usr/lib/rsyslog/reload-apparmor-profile (code=exited, status=0/SUCCESS) Main PID: 1400 (rsyslogd) Tasks: 4 (limit: 1264) Memory: 2.1M (peak: 5.5M, swap: 92K, swap peak: 92K) CPU: 576ms CGroup: /4ho87oY6XjIG3HuIT_Rw-Nz4Y_pF3N6FC5WvudGOECs=ice/PI_ayMsMnO1IkzT0O0WnL9rGKzwYXQh0SYqifA9x1_I=rvice └─1400 /usr/sbin/rsyslogd -n -iNONE FP5rjEBbCWoezXSsddyYA0MWR0M7r5zpNdRJCrEBrQU= eO2EcNST8GsUAtX0BnbeIJFSzoTad0ku3_93G_DSdWc= systemd[1]: Starting kCAB76FJZLrSZpt9SbA4ZAMW4ZzcwW7yjZiXSS-tjNc=rvice - System Logging Service... cCY6AfTakLWjS_byYIQha38D2oeNGRvN7C3si16P-Vk= kHQ1TkzhSQ-DxXSOxRwvvONYCTiKv30J6xZ-3Gbm_yg= systemd[1]: Started RWlI6CeX_bytZYN0e0Z3rDryCYfckAon0_8XwYzAYT0=rvice - System Logging Service. Mmp6bDthKGKjWK7jDCaDwo5qPSk9Q12MrJak4TseQvY= XbHiP0GrO7aa-7yDuR59aZQfYk-IkBZXc7LQB-bKX9k= rsyslogd[1400]: imuxsock: Acquired UNIX socket '/run/systemd/journal/syslog' (fd 3) from systemd. [v8.2512.0] Sep 26 14:14:10 auditor rsyslogd[1400]: rsyslogd's gr
+
+[R72] find /var/log -type f
+    -> /var/log/vmware-network.log /var/log/vmware-network.9.log /var/log/auth.log.4.gz /var/log/dmesg.3.gz /var/log/alternatives.log.1 /var/log/ubuntu-advantage-apt-hook.log /var/log/bootstrap.log /var/log/auth.log.2.gz /var/log/apport.log.2.gz /var/log/apport.log.4.gz /var/log/btmp /var/log/dmesg.4.gz /var/log/vmware-vmsvc-root.3.log /var/log/dpkg.log /var/log/vmware-network.8.log /var/log/auth.log.3.gz /var/log/syslog.4.gz /var/log/kern.log.4.gz /var/log/apport.log.6.gz /var/log/sysstat/sa17 /var/log/sysstat/sar18 /var/log/sysstat/sa18 /var/log/sysstat/sar23 /var/log/sysstat/sar22 /var/log/sysstat/sar17 /var/log/sysstat/sar21 /var/log/sysstat/sar20 /var/log/sysstat/sa26 /var/log/sysstat/sa21 /var/log/sysstat/sar25 /var/log/sysstat/sa20 /var/log/sysstat/sa19 /var/log/sysstat/sa24 /var/log/sysstat/sa23 /var/log/sysstat/sa22 /var/log/sysstat/sa25 /var/log/apport.log.5.gz /var/log/unattended-upgrades/unattended-upgrades.log.1.gz /var/log/unattended-upgrades/unattended-upgrades.log.2.gz /var/lo
+
+[R73] grep -E 'exit,always' /etc/audit/audit.rules
+    -> 
+
+[R75] grep -E '^root:
+    -> ^mail:' /etc/aliases|grep: /etc/aliases: No such file or directory
+
+[R77] stat /var/lib/aide/aide.db
+    -> stat: cannot stat '/var/lib/aide/aide.db': No such file or directory (os error 2)
+
+[R79] systemctl status
+    -> ● auditor State: running Units: 492 loaded (incl. loaded aliases) Jobs: 0 queued Failed: 0 units Since: 0e-Jc2c9Nkop0ONVRmeMwfwz02qLJwg1anmGJyoFhMO8rAZfwyEoQpiYpFQDooE7; 1h 6min ago systemd: 259.5-0ubuntu3.4 Tainted: unmerged-bin CGroup: / ├─yEVabnafyUyagHtA_KFIl6zsK3AayLRI7u7BKLv08Xs=cwSfkx3ANR2JpQiD84kdG72ZRPoJScXVlMMScoGePnQ= │ └─1 /usr/lib/systemd/systemd --switched-root --system --deserialize=51 ├─QtmVWpowIItz8HgZVOdtPs2m4bVLPkigf9nVMJAknBQ=ice │ ├─kKvLORXFYnEAxlA_BxaGg3MIVELwDXGrK53ypzF3gNM=rvice │ │ └─1408 /usr/sbin/ModemManager │ ├─umCAx0mmEajgY2_EtcsvjXjMxWXJH2qLw7pEcOTko9E=rvice │ │ └─867 /usr/sbin/auditd │ ├─KX0Bh8lpOCaCpoRZYIMjJ--O5TFXCa34nALxxU9BqKQ=rvice │ │ ├─ ZQntezJHPPe8QEE6zKTIk0ahO9UgOKoQ4G2MapfPESo= /usr/bin/containerd │ │ ├─ 2029 /usr/bin/containerd-shim-runc-v2 -namespace moby -id baebeffa9923882c88c7cceab7bc3af5810582ea100bef4376eef1d6c6399849 -address /run/containerd/kwHvIAx2Yub0PA05sW4lSZQ1_2edeTihf-cHMMhx4L4=ck │ │ └─HOiZ4P2MAkkF0OotTyFLEke-sOpjW7t6A-FoCRxS6mo= /usr/bin/containerd-shim-runc-v2 -namespace moby -id dfa23bc22363cbeb9dde0d63d3c21698a7c27424bcec34813bedd49f230c13f4 -address /run/containerd/RNuoTru2dSZXH-dIpqhuvgio5yK5yfx2-5_ADzaKsBs=ck │ ├─KwZv5mtYnHGMFVgY7tuPIqdpV3cMpLizIfvMI0op_jg=rvice │ │ └─1231 /usr/sbin/cron -f -P │ ├─94wExpPH1xYhlY1yWwb2s2nmi3h_JtXTfClAFBvCynk=rvice │ │ └─RZWrqZC2LVsqB2w81oIttuKmMYuy9Dpqr4HZlW5YnKeGXuc5SuaNmeXfzJK2qKHp --
+

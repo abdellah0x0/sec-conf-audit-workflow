@@ -1,0 +1,447 @@
+%=======================================================================
+%  CONFIGURATION SECURITY AUDIT REPORT — LaTeX TEMPLATE
+%=======================================================================
+\documentclass[11pt,a4paper]{article}
+
+%------------------------- PACKAGES ------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+% Falls back to Charter if Latin Modern is not installed
+\IfFileExists{lmodern.sty}{\usepackage{lmodern}}%
+  {\usepackage{charter}\usepackage[scaled=0.92]{helvet}}
+\usepackage[margin=2.4cm,headheight=15pt]{geometry}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{colortbl}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{etoolbox}
+\usepackage[most]{tcolorbox}
+\usepackage{lastpage}
+\usepackage[hidelinks,bookmarks=true]{hyperref}
+
+%------------------------- REPORT METADATA -----------------------------
+% >>> EDIT THESE <<<
+\newcommand{\ClientName}{ACME Corporation}
+\newcommand{\SystemName}{Production Linux Estate \& Perimeter Firewalls}
+\newcommand{\EngagementRef}{CSA-2026-014}
+\newcommand{\AuditorName}{Jane Doe, Security Engineer}
+\newcommand{\AuditorOrg}{Blue Ridge Security Ltd.}
+\newcommand{\ReviewerName}{John Smith, Lead Auditor}
+\newcommand{\AuditPeriod}{01--12 September 2026}
+\newcommand{\ReportDate}{\today}
+\newcommand{\DocVersion}{1.0}
+\newcommand{\Classification}{CONFIDENTIAL}
+
+%------------------------- SEVERITY COLOURS ----------------------------
+\definecolor{sevCritical}{HTML}{7B1113}
+\definecolor{sevHigh}{HTML}{C0392B}
+\definecolor{sevMedium}{HTML}{D68910}
+\definecolor{sevLow}{HTML}{2874A6}
+\definecolor{sevInfo}{HTML}{566573}
+\definecolor{rulegray}{HTML}{B3B6B7}
+\definecolor{lightrow}{HTML}{F2F4F4}
+\colorlet{findcolor}{sevInfo}
+
+% Maps a severity name to the colour "findcolor"
+\newcommand{\setseverity}[1]{%
+  \ifstrequal{#1}{Critical}{\colorlet{findcolor}{sevCritical}}{%
+  \ifstrequal{#1}{High}{\colorlet{findcolor}{sevHigh}}{%
+  \ifstrequal{#1}{Medium}{\colorlet{findcolor}{sevMedium}}{%
+  \ifstrequal{#1}{Low}{\colorlet{findcolor}{sevLow}}{%
+  \colorlet{findcolor}{sevInfo}}}}}}
+
+% Inline coloured severity badge: \sev{High}
+\newcommand{\sev}[1]{\setseverity{#1}%
+  \textcolor{white}{\colorbox{findcolor}{\strut\footnotesize\bfseries\,#1\,}}}
+
+%------------------------- FINDING ENVIRONMENT -------------------------
+% Usage: \begin{finding}{FIND-001}{Short title}{High} ... \end{finding}
+\newenvironment{finding}[3]{%
+  \setseverity{#3}%
+  \phantomsection\addcontentsline{toc}{subsection}{#1 --- #2}%
+  \begin{tcolorbox}[
+    breakable, enhanced, sharp corners=downhill,
+    colback=white, colframe=findcolor, boxrule=0.8pt,
+    left=8pt, right=8pt, top=6pt, bottom=6pt,
+    fonttitle=\bfseries\color{white},
+    title={#1 \; --- \; #2 \hfill \MakeUppercase{#3}}]%
+}{\end{tcolorbox}\vspace{4pt}}
+
+% Metadata block used at the top of each finding
+\newcommand{\findingmeta}[4]{%
+  \begin{tabularx}{\linewidth}{@{}>{\bfseries}p{3.1cm}X@{}}
+    Affected assets & #1 \\
+    Control mapping & #2 \\
+    Likelihood / Impact & #3 \\
+    Status & #4 \\
+  \end{tabularx}\vspace{4pt}\hrule\vspace{6pt}}
+
+\newcommand{\fsec}[1]{\vspace{4pt}\noindent\textbf{\textcolor{findcolor}{#1}}\par\nobreak\vspace{2pt}}
+
+%------------------------- CODE / CONFIG LISTINGS ----------------------
+\definecolor{lstbg}{HTML}{F7F8F9}
+\lstdefinestyle{config}{
+  backgroundcolor=\color{lstbg}, basicstyle=\ttfamily\footnotesize,
+  breaklines=true, frame=leftline, framerule=1.2pt, rulecolor=\color{rulegray},
+  xleftmargin=8pt, framexleftmargin=8pt, showstringspaces=false,
+  commentstyle=\color{sevInfo}\itshape, keywordstyle=\color{sevLow}\bfseries,
+  captionpos=b, aboveskip=6pt, belowskip=6pt}
+\lstset{style=config}
+
+%------------------------- HEADERS / FOOTERS ---------------------------
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\ClientName\ --- Configuration Security Audit}
+\fancyhead[R]{\footnotesize\textbf{\Classification}}
+\fancyfoot[L]{\footnotesize Ref: \EngagementRef\ \textbar\ v\DocVersion}
+\fancyfoot[R]{\footnotesize Page \thepage\ of \pageref{LastPage}}
+
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}[\vspace{2pt}\hrule]
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=3pt}
+\setlist[enumerate]{leftmargin=1.6em,itemsep=2pt,topsep=3pt}
+\renewcommand{\arraystretch}{1.25}
+
+%=======================================================================
+\begin{document}
+%------------------------- TITLE PAGE ----------------------------------
+\begin{titlepage}
+\centering
+\vspace*{1.5cm}
+{\small\bfseries\Classification}\\[2cm]
+% \includegraphics[width=5cm]{logo.png}\\[1cm]
+{\Huge\bfseries Configuration Security Audit\par}
+\vspace{0.6cm}
+{\LARGE \SystemName\par}
+\vspace{2cm}
+\begin{tabular}{@{}>{\bfseries}l l@{}}
+\toprule
+Client & \ClientName \\
+Engagement reference & \EngagementRef \\
+Audit period & \AuditPeriod \\
+Prepared by & \AuditorName \\
+Organisation & \AuditorOrg \\
+Reviewed by & \ReviewerName \\
+Report date & \ReportDate \\
+Version & \DocVersion \\
+Classification & \Classification \\
+\bottomrule
+\end{tabular}
+\vfill
+{\footnotesize This document contains confidential information about the security posture of
+\ClientName. Distribution is restricted to the parties listed in the distribution table.
+Do not forward, copy, or store outside approved systems.\par}
+\end{titlepage}
+
+%------------------------- DOCUMENT CONTROL ----------------------------
+\section*{Document Control}
+\addcontentsline{toc}{section}{Document Control}
+
+\noindent\textbf{Revision history}
+\begin{longtable}{@{}l l p{5.6cm} l l@{}}
+\toprule
+\textbf{Version} & \textbf{Date} & \textbf{Summary of change} & \textbf{Author} & \textbf{Approved} \\
+\midrule\endhead
+0.1 & 2026-09-08 & Initial draft & J. Doe & --- \\
+0.9 & 2026-09-11 & Peer review comments applied & J. Doe & J. Smith \\
+1.0 & 2026-09-12 & Final issue to client & J. Doe & J. Smith \\
+\bottomrule
+\end{longtable}
+
+\noindent\textbf{Distribution list}
+\begin{longtable}{@{}l l l@{}}
+\toprule
+\textbf{Name} & \textbf{Role} & \textbf{Organisation} \\
+\midrule\endhead
+A. Example & CISO & \ClientName \\
+B. Example & Head of Infrastructure & \ClientName \\
+\ReviewerName & Lead Auditor & \AuditorOrg \\
+\bottomrule
+\end{longtable}
+
+\newpage
+\tableofcontents
+\newpage
+
+%=======================================================================
+\section{Executive Summary}
+Summarise, in language a non-technical reader can act on: what was assessed,
+how it was assessed, the overall state of the configuration baseline, and the
+two or three issues that matter most. Keep this section to one page.
+
+\vspace{6pt}
+\noindent\textbf{Overall assessment:} \emph{e.g.\ Moderate risk --- the estate is
+broadly hardened, but inconsistent baseline enforcement on newly provisioned
+hosts leaves a recurring gap.}
+
+\vspace{10pt}
+\noindent\textbf{Findings by severity}
+\begin{center}
+\begin{tabular}{@{}l c c c c c@{}}
+\toprule
+& \sev{Critical} & \sev{High} & \sev{Medium} & \sev{Low} & \sev{Info} \\
+\midrule
+Count & 1 & 3 & 5 & 4 & 2 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\vspace{6pt}
+\noindent\textbf{Key themes}
+\begin{enumerate}
+  \item \textbf{Theme one.} One or two sentences on the systemic cause, not just the symptom.
+  \item \textbf{Theme two.} Where the same misconfiguration recurs across assets, say so here.
+  \item \textbf{Theme three.} Note anything done well --- it tells the reader what to protect.
+\end{enumerate}
+
+%=======================================================================
+\section{Scope and Objectives}
+
+\subsection{Objectives}
+\begin{itemize}
+  \item Verify that deployed configurations match the approved hardening baseline.
+  \item Identify misconfigurations that weaken authentication, authorisation, logging, or network exposure.
+  \item Assess configuration change control and drift detection.
+  \item Map gaps to the applicable control framework and provide prioritised remediation.
+\end{itemize}
+
+\subsection{Assets in scope}
+\begin{longtable}{@{}l l l l l@{}}
+\toprule
+\textbf{Asset ID} & \textbf{Hostname / Identifier} & \textbf{Type} & \textbf{Version} & \textbf{Environment} \\
+\midrule\endhead
+AST-001 & web-prod-01 & Ubuntu Server & 24.04 LTS & Production \\
+AST-002 & fw-edge-01 & Firewall & PAN-OS 11.1 & Production \\
+AST-003 & db-prod-01 & PostgreSQL & 16.3 & Production \\
+AST-004 & k8s-prod & Kubernetes cluster & 1.30 & Production \\
+\bottomrule
+\end{longtable}
+
+\subsection{Out of scope}
+\begin{itemize}
+  \item Application source code review and dynamic application testing.
+  \item Physical security and personnel controls.
+  \item Third-party SaaS tenants not administered by \ClientName.
+\end{itemize}
+
+\subsection{Assumptions and limitations}
+\begin{itemize}
+  \item Configuration was reviewed as at \AuditPeriod; later changes are not reflected.
+  \item Read-only credentials were provided; no exploitation was attempted.
+  \item Findings are based on the evidence supplied; undisclosed compensating controls may alter risk ratings.
+\end{itemize}
+
+%=======================================================================
+\section{Methodology}
+Describe how the review was performed so a third party could repeat it.
+
+\subsection{Approach}
+\begin{enumerate}
+  \item \textbf{Collection} --- configuration exports, running state, and policy documents gathered from each in-scope asset.
+  \item \textbf{Baseline comparison} --- settings compared against the benchmarks listed below and against \ClientName's internal standard.
+  \item \textbf{Manual review} --- automated results triaged to remove false positives and to assess contextual risk.
+  \item \textbf{Validation} --- deviations confirmed with the system owner before rating.
+  \item \textbf{Rating and reporting} --- each deviation rated on likelihood and impact, then mapped to controls.
+\end{enumerate}
+
+\subsection{Reference standards}
+\begin{longtable}{@{}l p{7.5cm} l@{}}
+\toprule
+\textbf{Ref} & \textbf{Standard / benchmark} & \textbf{Version} \\
+\midrule\endhead
+CIS & CIS Benchmark for the relevant platform & v2.0.0 \\
+NIST & NIST SP 800-53 Rev.\ 5 security controls & Rev.\ 5 \\
+ISO & ISO/IEC 27001:2022 Annex A & 2022 \\
+INT & \ClientName\ Internal Hardening Standard & v3.1 \\
+\bottomrule
+\end{longtable}
+
+\subsection{Tooling}
+\begin{longtable}{@{}l p{6.5cm} l@{}}
+\toprule
+\textbf{Tool} & \textbf{Purpose} & \textbf{Version} \\
+\midrule\endhead
+Tool A & Automated benchmark scanning & 1.2.3 \\
+Tool B & Configuration export and diff & 4.5 \\
+Manual & Shell inspection and interview & --- \\
+\bottomrule
+\end{longtable}
+
+\subsection{Severity rating}
+Severity is derived from likelihood and impact as set out in Appendix~\ref{app:ratings}.
+
+%=======================================================================
+\section{Summary of Findings}
+\begin{longtable}{@{}l p{6.2cm} l l l@{}}
+\toprule
+\textbf{ID} & \textbf{Finding} & \textbf{Severity} & \textbf{Assets} & \textbf{Status} \\
+\midrule\endhead
+\rowcolor{lightrow}
+CSA-001 & Password authentication permitted for remote administrative access & \sev{Critical} & AST-001 & Open \\
+CSA-002 & Permissive inbound rule exposes management interface & \sev{High} & AST-002 & Open \\
+CSA-003 & Audit logging disabled for privileged operations & \sev{Medium} & AST-003 & Open \\
+CSA-004 & Legacy protocol version still enabled & \sev{Low} & AST-004 & Accepted \\
+\bottomrule
+\end{longtable}
+
+%=======================================================================
+\section{Detailed Findings}
+
+% ----------------------- TEMPLATE FINDING ----------------------------
+\begin{finding}{CSA-001}{Password authentication permitted for remote administrative access}{Critical}
+\findingmeta
+  {AST-001 (web-prod-01)}                    % affected assets
+  {CIS 5.2.x; NIST IA-2, AC-17; ISO A.8.5}   % control mapping
+  {Likely / Severe}                          % likelihood / impact
+  {Open}                                     % status
+
+\fsec{Description}
+State plainly what the configuration is and how it deviates from the baseline.
+Avoid tool output pasted without interpretation.
+
+\fsec{Evidence}
+\begin{lstlisting}[caption={Excerpt from /etc/ssh/sshd\_config on web-prod-01},label={lst:csa001}]
+# Observed setting
+PasswordAuthentication yes
+PermitRootLogin yes
+# Expected per baseline INT-3.1 section 4.2
+# PasswordAuthentication no
+# PermitRootLogin prohibit-password
+\end{lstlisting}
+
+\fsec{Risk and impact}
+Explain the realistic consequence in business terms: what an attacker gains,
+which data or service is reachable, and what else breaks as a result.
+
+\fsec{Recommendation}
+\begin{enumerate}
+  \item Set the control to its required value, quoting the exact directive or console path.
+  \item Enforce the setting through configuration management so it survives rebuilds.
+  \item Add a detection rule or scheduled check for drift on this setting.
+\end{enumerate}
+
+\fsec{Remediation effort}
+Low --- single configuration change plus service reload; no downtime expected.
+
+\fsec{References}
+CIS Benchmark section x.y.z; vendor hardening guide; internal standard INT-3.1 \S4.2.
+\end{finding}
+
+% ----------------------- COPY FROM HERE FOR NEW FINDINGS -------------
+\begin{finding}{CSA-002}{Short, factual finding title}{High}
+\findingmeta{AST-00x}{Framework control IDs}{Possible / Major}{Open}
+
+\fsec{Description}
+Replace with the observed configuration and the deviation.
+
+\fsec{Evidence}
+\begin{lstlisting}[caption={Source of evidence --- file, command, or console screen}]
+key = observed_value    # expected: required_value
+\end{lstlisting}
+
+\fsec{Risk and impact}
+Replace.
+
+\fsec{Recommendation}
+\begin{enumerate}
+  \item Replace.
+\end{enumerate}
+
+\fsec{Remediation effort}
+Replace.
+
+\fsec{References}
+Replace.
+\end{finding}
+
+%=======================================================================
+\section{Remediation Roadmap}
+Prioritise by risk reduction per unit of effort, not by severity alone.
+
+\begin{longtable}{@{}l p{5.4cm} l l l@{}}
+\toprule
+\textbf{ID} & \textbf{Action} & \textbf{Priority} & \textbf{Owner} & \textbf{Target date} \\
+\midrule\endhead
+CSA-001 & Disable password authentication and enforce via config management & Immediate ($\leq$7 days) & Infrastructure & 2026-09-21 \\
+CSA-002 & Restrict management interface to jump-host source range & Short term ($\leq$30 days) & Network & 2026-10-12 \\
+CSA-003 & Enable privileged operation auditing and forward to SIEM & Medium term ($\leq$90 days) & Platform & 2026-12-10 \\
+\bottomrule
+\end{longtable}
+
+\subsection{Systemic recommendations}
+\begin{itemize}
+  \item Bring all in-scope hosts under a single enforced configuration baseline.
+  \item Run benchmark scanning on a schedule and alert on drift rather than auditing point-in-time.
+  \item Require baseline compliance as a gate in the provisioning pipeline.
+\end{itemize}
+
+%=======================================================================
+\section{Conclusion}
+Close with the overall posture, the residual risk once the roadmap is complete,
+and any recommended date for re-testing or follow-up review.
+
+%=======================================================================
+\appendix
+\section{Severity and Rating Definitions}\label{app:ratings}
+
+\begin{longtable}{@{}l p{9.5cm}@{}}
+\toprule
+\textbf{Severity} & \textbf{Definition} \\
+\midrule\endhead
+\sev{Critical} & Directly exploitable, exposes sensitive data or privileged access; remediate immediately. \\
+\sev{High} & Significant weakening of a security control; exploitable with modest effort or conditions. \\
+\sev{Medium} & Meaningful gap requiring chained conditions or limited to a narrower asset set. \\
+\sev{Low} & Minor deviation with limited practical impact; hardening improvement. \\
+\sev{Info} & No direct risk; observation, good practice, or note for future work. \\
+\bottomrule
+\end{longtable}
+
+\vspace{6pt}
+\noindent\textbf{Likelihood / impact matrix}
+\begin{center}
+\begin{tabular}{@{}l c c c@{}}
+\toprule
+\textbf{Likelihood $\downarrow$ / Impact $\rightarrow$} & \textbf{Minor} & \textbf{Major} & \textbf{Severe} \\
+\midrule
+Likely   & \sev{Medium} & \sev{High}   & \sev{Critical} \\
+Possible & \sev{Low}    & \sev{Medium} & \sev{High} \\
+Unlikely & \sev{Info}   & \sev{Low}    & \sev{Medium} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%=======================================================================
+\section{Control Framework Mapping}
+\begin{longtable}{@{}l p{4.6cm} l l l@{}}
+\toprule
+\textbf{Finding} & \textbf{Control area} & \textbf{CIS} & \textbf{NIST 800-53} & \textbf{ISO 27001} \\
+\midrule\endhead
+CSA-001 & Remote access authentication & 5.2.x & IA-2, AC-17 & A.8.5 \\
+CSA-002 & Network boundary protection & 3.x & SC-7 & A.8.20 \\
+CSA-003 & Audit and accountability & 4.x & AU-2, AU-12 & A.8.15 \\
+\bottomrule
+\end{longtable}
+
+%=======================================================================
+\section{Evidence Index}
+\begin{longtable}{@{}l p{5.6cm} l l@{}}
+\toprule
+\textbf{Ref} & \textbf{Artefact} & \textbf{Source} & \textbf{Collected} \\
+\midrule\endhead
+EV-001 & sshd\_config export & web-prod-01 & 2026-09-03 \\
+EV-002 & Firewall policy export & fw-edge-01 & 2026-09-04 \\
+EV-003 & Benchmark scan report & Tool A & 2026-09-05 \\
+\bottomrule
+\end{longtable}
+
+\noindent\footnotesize Evidence is retained in accordance with the engagement
+agreement and destroyed on the agreed schedule.
+
+\end{document}

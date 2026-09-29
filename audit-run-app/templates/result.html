@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+{% block title %}Audit #{{ run.id }} — Audit Console{% endblock %}
+{% block content %}
+{% if run.status == 'running' %}
+<meta http-equiv="refresh" content="4">
+{% endif %}
+<div class="page-header">
+  <h1>Audit #{{ run.id }}</h1>
+  <div style="display:flex;gap:14px;align-items:center">
+    {% if run.status == 'success' and run.results %}
+    <a href="{{ url_for('download_audit', run_id=run.id) }}" class="btn btn-ghost">Download .txt</a>
+    <a href="{{ url_for('generate_report', run_id=run.id) }}" class="btn btn-ghost">Generate Report</a>
+    {% endif %}
+    <a href="{{ url_for('dashboard') }}" class="link-back">&larr; back to history</a>
+  </div>
+</div>
+
+<div class="run-meta">
+  <div><span class="k">host</span><span class="v">{{ run.host }}:{{ run.port }}</span></div>
+  <div><span class="k">ssh user</span><span class="v">{{ run.ssh_user }}</span></div>
+  <div><span class="k">benchmark</span><span class="v">{{ run.benchmark }}</span></div>
+  <div><span class="k">status</span>
+    <span class="v">
+      {% if run.status == 'success' %}<span class="tag tag-pass">[ PASS ]</span>
+      {% elif run.status == 'failed' %}<span class="tag tag-fail">[ FAIL ]</span>
+      {% else %}<span class="tag tag-running">[ RUNNING <span class="cursor">_</span> ]</span>{% endif %}
+    </span>
+  </div>
+  <div><span class="k">started</span><span class="v">{{ run.started_at.strftime('%Y-%m-%d %H:%M') }} UTC</span></div>
+  {% if run.duration_seconds is not none %}
+  <div><span class="k">duration</span><span class="v">{{ run.duration_seconds }}s</span></div>
+  {% endif %}
+  <div><span class="k">report</span>
+    <span class="v">
+      {% if run.report_status == 'done' %}
+        <span class="tag tag-pass">[ DONE ]</span>
+      {% elif run.report_status == 'running' %}
+        <span class="tag tag-running" id="report-status-tag">[ GENERATING <span class="cursor">_</span> ]</span>
+      {% elif run.report_status == 'failed' %}
+        <span class="tag tag-fail">[ FAILED ]</span>
+      {% else %}
+        <span class="tag">[ N/A ]</span>
+      {% endif %}
+    </span>
+  </div>
+</div>
+
+{% if run.report_status == 'failed' %}
+<div class="error-panel"><strong>Report failed:</strong> {{ run.error }}</div>
+{% endif %}
+
+{% if run.report_status == 'running' %}
+<div class="empty-state" id="report-generating-banner">
+  <p>Report generation in progress — you will be notified when it is ready.</p>
+</div>
+{% endif %}
+
+{% if run.report_status == 'done' %}
+<div class="empty-state">
+  <p>Report is ready. <a href="{{ url_for('download_report', run_id=run.id) }}">Download PDF</a></p>
+</div>
+{% endif %}
+
+{% if run.status == 'running' %}
+<div class="empty-state"><p>Audit in progress — this page refreshes automatically.</p></div>
+{% elif run.status == 'failed' %}
+<div class="error-panel"><strong>Run failed:</strong> {{ run.error }}</div>
+{% elif run.results %}
+<div class="results-toolbar">
+  <span class="results-count">{{ run.result_count }} result{{ '' if run.result_count == 1 else 's' }}</span>
+  <input type="text" id="filter" class="filter-input" placeholder="filter rules…" autocomplete="off">
+</div>
+<table class="log-table results-table" id="results">
+  <thead>
+    <tr><th>Rule</th><th>Command</th><th>Result</th></tr>
+  </thead>
+  <tbody>
+    {% for r in run.results %}
+    <tr class="result-row" data-search="{{ (r.rule ~ ' ' ~ r.command)|lower }}">
+      <td class="mono">{{ r.rule }}</td>
+      <td class="mono cmd">
+        <div class="cmd-wrap">
+          <span class="cmd-text">{{ r.command }}</span>
+          <button type="button" class="copy-btn" data-copy="{{ r.command }}">copy</button>
+        </div>
+      </td>
+      <td class="mono res">{{ r.command_result }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<div class="empty-state" id="no-matches" style="display:none;margin-top:16px">
+  <p>No rules match that filter.</p>
+</div>
+{% else %}
+<div class="empty-state"><p>No results were recorded for this run.</p></div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+{% if run.report_status == 'running' %}
+<script>
+  (function () {
+    var runId = {{ run.id }};
+
+    var interval = setInterval(function () {
+      fetch('/audit/' + runId + '/report-status')
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+
+          if (data.status === 'done') {
+            clearInterval(interval);
+            var banner = document.getElementById('report-generating-banner');
+            var tag = document.getElementById('report-status-tag');
+            if (tag) tag.outerHTML = '<span class="tag tag-pass">[ DONE ]</span>';
+            if (banner) banner.innerHTML = '<p>Report is ready. <a href="/audit/' + runId + '/download-report">Download PDF</a></p>';
+          }
+
+          if (data.status === 'failed') {
+            clearInterval(interval);
+            var banner = document.getElementById('report-generating-banner');
+            var tag = document.getElementById('report-status-tag');
+            if (tag) tag.outerHTML = '<span class="tag tag-fail">[ FAILED ]</span>';
+            if (banner) banner.innerHTML = '<p>Report generation failed: ' + data.error + '</p>';
+          }
+
+        })
+        .catch(function (err) {
+          console.error('Status check failed:', err);
+        });
+    }, 5000);
+  })();
+</script>
+{% endif %}
+
+{% if run.status == 'success' and run.results %}
+<script>
+  (function () {
+    var filter = document.getElementById('filter');
+    var rows = Array.prototype.slice.call(document.querySelectorAll('.result-row'));
+    var noMatches = document.getElementById('no-matches');
+    var table = document.getElementById('results');
+
+    filter.addEventListener('input', function () {
+      var q = filter.value.trim().toLowerCase();
+      var shown = 0;
+      rows.forEach(function (row) {
+        var match = !q || row.dataset.search.indexOf(q) !== -1;
+        row.style.display = match ? '' : 'none';
+        if (match) shown++;
+      });
+      table.style.display = shown ? '' : 'none';
+      noMatches.style.display = shown ? 'none' : '';
+    });
+
+    document.querySelectorAll('.copy-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var text = btn.getAttribute('data-copy');
+        navigator.clipboard.writeText(text).then(function () {
+          btn.textContent = 'copied';
+          btn.classList.add('copied');
+          setTimeout(function () {
+            btn.textContent = 'copy';
+            btn.classList.remove('copied');
+          }, 1200);
+        });
+      });
+    });
+  })();
+</script>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benchmark Upload — Audit Agent</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0A0C10;
+            --bg-raised: #0F1319;
+            --panel: #12161D;
+            --panel-hover: #161B23;
+            --border: #1E242E;
+            --border-bright: #2A323E;
+            --text: #E6E9EE;
+            --text-dim: #9AA3B2;
+            --text-faint: #5C6675;
+            --accent: #5B9CFF;
+            --pass: #4ADE9A;
+            --fail: #F0665B;
+            --radius: 4px;
+            --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+            --sans: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            max-width: 500px;
+            width: 100%;
+            padding: 36px;
+        }
+
+        .brand {
+            font-family: var(--mono);
+            font-size: 14px;
+            color: var(--text);
+            margin-bottom: 28px;
+            letter-spacing: -0.01em;
+        }
+        .brand-accent { color: var(--accent); }
+
+        .header { margin-bottom: 28px; }
+
+        .header h1 {
+            font-size: 20px;
+            color: var(--text);
+            margin-bottom: 8px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .header p {
+            font-size: 13px;
+            color: var(--text-dim);
+            line-height: 1.55;
+        }
+
+        .form-group { margin-bottom: 20px; }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--text-dim);
+            font-weight: 500;
+            font-size: 11px;
+            font-family: var(--mono);
+            letter-spacing: 0.02em;
+            text-transform: lowercase;
+        }
+
+        input[type="text"],
+        input[type="file"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-bright);
+            border-radius: var(--radius);
+            font-size: 13px;
+            transition: border-color 0.15s;
+            font-family: var(--mono);
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        input[type="text"]::placeholder { color: var(--text-faint); }
+
+        input[type="text"]:focus,
+        input[type="file"]:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        input[type="text"]:hover,
+        input[type="file"]:hover { border-color: #37414F; }
+
+        input[type="file"] { cursor: pointer; font-size: 12px; padding: 8px 12px; }
+        input[type="file"]::file-selector-button {
+            background: var(--panel-hover);
+            border: 1px solid var(--border-bright);
+            color: var(--text);
+            border-radius: 3px;
+            padding: 5px 12px;
+            margin-right: 12px;
+            font-family: var(--mono);
+            font-size: 12px;
+            cursor: pointer;
+        }
+        input[type="file"]::file-selector-button:hover { border-color: var(--accent); }
+
+        .file-info {
+            font-size: 11px;
+            color: var(--text-faint);
+            margin-top: 5px;
+            font-family: var(--mono);
+        }
+
+        /* generation-method info card (no selector anymore) */
+        .mode-group { margin-bottom: 22px; }
+        .mode-card {
+            border: 1px solid var(--border-bright);
+            border-radius: var(--radius);
+            padding: 12px 14px;
+            background: var(--panel-hover);
+        }
+        .mode-title {
+            font-weight: 600;
+            font-size: 13px;
+            font-family: var(--mono);
+        }
+        .mode-desc {
+            display: block;
+            color: var(--text-dim);
+            font-size: 12px;
+            margin-top: 5px;
+            line-height: 1.5;
+        }
+
+        .upload-btn {
+            width: 100%;
+            padding: 11px;
+            background: var(--accent);
+            color: #06101F;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s;
+            margin-top: 8px;
+            font-family: var(--sans);
+        }
+        .upload-btn:hover { background: #7FB2FF; }
+        .upload-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .message {
+            margin-top: 16px;
+            padding: 11px 14px;
+            border-radius: var(--radius);
+            font-size: 12px;
+            font-family: var(--mono);
+            display: none;
+        }
+        .message.success {
+            background: rgba(74, 222, 154, 0.08);
+            color: var(--pass);
+            border: 1px solid rgba(74, 222, 154, 0.3);
+            display: block;
+        }
+        .message.error {
+            background: rgba(240, 102, 91, 0.08);
+            color: var(--fail);
+            border: 1px solid rgba(240, 102, 91, 0.3);
+            display: block;
+        }
+
+        .loading { display: none; text-align: center; margin-top: 16px; }
+        .spinner {
+            border: 2px solid var(--border-bright);
+            border-top: 2px solid var(--accent);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 8px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @media (prefers-reduced-motion: reduce) { .spinner { animation: none; } }
+        .loading.active { display: block; }
+        .loading p { color: var(--text-dim); font-size: 12px; font-family: var(--mono); }
+
+        .footer {
+            text-align: center;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            color: var(--text-faint);
+            font-size: 11px;
+            font-family: var(--mono);
+        }
+
+        @media (max-width: 500px) {
+            .container { padding: 28px 22px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="brand">audit<span class="brand-accent">/</span>upload</div>
+
+        <div class="header">
+            <h1>Benchmark Upload</h1>
+            <p>Upload a security benchmark PDF to ingest it and generate an audit script.</p>
+        </div>
+
+        <form id="uploadForm">
+            <div class="form-group">
+                <label for="benchmarkName">benchmark name</label>
+                <input
+                    type="text"
+                    id="benchmarkName"
+                    name="benchmark_name"
+                    placeholder="e.g. anssi-bp-028"
+                    autocomplete="off"
+                    required
+                >
+                <div class="file-info">Collection identifier for this benchmark</div>
+            </div>
+
+            <div class="form-group">
+                <label for="pdfFile">pdf file</label>
+                <input type="file" id="pdfFile" name="file" accept=".pdf" required>
+                <div class="file-info">Max file size: 100MB</div>
+            </div>
+
+            <div class="mode-group">
+                <label>generation method</label>
+                <div class="mode-card">
+                    <span class="mode-title">Smart</span>
+                    <span class="mode-desc">A Claude agent reads the whole document and generates
+                        the script intelligently, lifting commands verbatim when the document
+                        provides them.</span>
+                </div>
+            </div>
+
+            <button type="submit" class="upload-btn" id="submitBtn">Upload &amp; Process</button>
+        </form>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Processing benchmark…</p>
+        </div>
+
+        <div class="message" id="message"></div>
+
+        <div class="footer">All files processed locally · Secure upload</div>
+    </div>
+
+    <script>
+        const form = document.getElementById('uploadForm');
+        const messageDiv = document.getElementById('message');
+        const loadingDiv = document.getElementById('loading');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            messageDiv.className = 'message';
+            messageDiv.textContent = '';
+
+            const formData = new FormData(form);
+            formData.set('mode', 'smart'); // Standard removed — always use Smart
+
+            const file = formData.get('file');
+
+            if (!file.name.toLowerCase().endsWith('.pdf')) {
+                showMessage('Only PDF files are allowed', 'error');
+                return;
+            }
+
+            const benchmarkName = formData.get('benchmark_name');
+            if (!benchmarkName.trim()) {
+                showMessage('Benchmark name is required', 'error');
+                return;
+            }
+
+            loadingDiv.classList.add('active');
+            submitBtn.disabled = true;
+
+            try {
+                const response = await fetch('/upload', { method: 'POST', body: formData });
+                const data = await response.json();
+
+                if (response.ok) {
+                    showMessage(data.message || `Uploaded to "${data.benchmark}"`, 'success');
+                    form.reset();
+                } else {
+                    showMessage(`Error: ${data.error}`, 'error');
+                }
+            } catch (error) {
+                showMessage(`Upload failed: ${error.message}`, 'error');
+            } finally {
+                loadingDiv.classList.remove('active');
+                submitBtn.disabled = false;
+            }
+        });
+
+        function showMessage(text, type) {
+            messageDiv.className = `message ${type}`;
+            messageDiv.textContent = text;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+# Presidio analyzer config — scoped for technical/audit output.
+# GLiNER only targets entities that plausibly appear in this domain
+# (credentials, hosts, people running the audit). Everything else that
+# caused false positives on command output has been removed.
+
+supported_languages:
+  - en
+default_score_threshold: 0.5 
+
+nlp_configuration:
+  nlp_engine_name: slim
+  models:
+    - lang_code: en
+      model_name: en_core_web_sm
+
+recognizer_registry:
+  global_regex_flags: 26
+  recognizers:
+    - name: SpacyRecognizer
+      type: predefined
+      enabled: true
+
+    - name: GLiNERRecognizer
+      type: predefined
+      supported_languages:
+        - en
+      model_name: nvidia/gliner-PII
+      flat_ner: true          # was false — prevents overlapping spans that corrupted words mid-token
+      multi_label: false      # was true — one label per span, reduces double-tagging noise
+      map_location: cpu
+      threshold: 0.75         # was 0.35 — sharply reduces false positives on technical text
+      entity_mapping:
+        person: PERSON
+        name: PERSON
+        email: EMAIL_ADDRESS
+        email address: EMAIL_ADDRESS
+
+    - name: IpRecognizer
+      type: predefined
+    - name: EmailRecognizer
+      type: predefined
+    - name: UrlRecognizer
+      type: predefined
+    - name: MacAddressRecognizer
+      type: predefined

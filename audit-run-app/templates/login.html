@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Sign in — Audit Console{% endblock %}
+{% block content %}
+<div class="login-wrap">
+  <div class="login-panel">
+    <div class="login-mark">audit<span class="brand-accent">/</span>console</div>
+    <p class="login-sub">Restricted to authorized auditors.</p>
+    <form method="POST" class="login-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <label for="username">username</label>
+      <input type="text" id="username" name="username" autocomplete="username" required autofocus>
+      <label for="password">password</label>
+      <input type="password" id="password" name="password" autocomplete="current-password" required>
+      <button type="submit" class="btn btn-primary">Sign in</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
