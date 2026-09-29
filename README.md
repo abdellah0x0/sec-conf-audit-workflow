@@ -10,7 +10,6 @@ Automated Linux configuration security audit system using AI agents.
 - Docker
 - pdfLaTeX (`miktex` on Windows, `texlive` on Linux)
 - An Anthropic API key
-- A Groq API key
 
 ---
 
